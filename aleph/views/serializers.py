@@ -200,6 +200,8 @@ class EntitySerializer(Serializer):
         properties = obj.get('properties', {})
         for name, values in properties.items():
             prop = schema.get(name)
+            if prop is None:
+                raise RuntimeError("Missing prop: %r on %r" % (name, schema))
             if prop.type != registry.entity:
                 continue
             for value in ensure_list(values):
